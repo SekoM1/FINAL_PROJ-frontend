@@ -4,7 +4,7 @@
             <div class = "card-container">
                 <div class = "card-content">
                     <h3>Reservation</h3>
-                    <form>
+                    <form  @submit.prevent="submitForm()" >
                         <div class = "form-row">
                             <select id = "days" v-model="days">
                                 <option value = "day-select">Select Day</option>
@@ -48,7 +48,11 @@
 export default {
   data() {
     return {
-      form: false
+      form: false,
+      people:null,
+      hours: null,
+      days: null,
+      number: null,
     }
   },
   methods: {
@@ -56,17 +60,22 @@ export default {
       //Logic 
       this.form = !this.form
     },
+    
     submitForm() {
-      console.log(this.firstname, this.lastname, this.email, this.message);
-      fetch("http://localhost:3000/contact/", {
+    if(localStorage.getItem("jwt")){
+        const user = JSON.parse(localStorage.getItem("user"))
+      fetch("https://lyf-styl-reservation.herokuapp.com/booking", {
         method: "POST",
-        headers: { "Content-type": "application/json; charset=UTF-8" },
+        headers: { "Content-type": "application/json; charset=UTF-8", 
+        Authorization: `Bearer ${localStorage.getItem("jwt")}` },
 
         body: JSON.stringify({
-          fullname: this.fullname,
+            email: user.email,
+            firstname: user.firstname,
+          people: this.people,
           number: this.number,
-          email: this.email,
-          message: this.message,
+          hours: this.hours,
+          days: this.days,
         }),
       })
         .then((response) => response.json())
@@ -74,8 +83,8 @@ export default {
           console.log(json);
         })
         .catch((err) => console.log(err));
+    }
     },
-  
   },
   mounted(){
         if (!localStorage.getItem("jwt")) {

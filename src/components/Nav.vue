@@ -231,7 +231,7 @@ export default {
     alert("logged out");
   },
     login() {
-      fetch("http://localhost:3000/users/login", {
+      fetch("https://lyf-styl-reservation.herokuapp.com/users/login", {
         method: "PATCH",
         body: JSON.stringify({
           email: this.email,
@@ -244,7 +244,9 @@ export default {
         .then((response) => response.json())
         .then((json) => {
           localStorage.setItem("jwt", json.jwt);
+          localStorage.setItem("user", JSON.stringify(json.user))
           console.log(json.jwt);
+          console.log(json.user)
           alert("User logged in");
           console.log("User logged in");
           // this.$router.push({ name: "Home" });
@@ -261,7 +263,7 @@ export default {
         email: this.email,
         password: this.password,
       };
-      fetch("http://localhost:3000/users/register", {
+      fetch("https://lyf-styl-reservation.herokuapp.com/users/register", {
         method: "POST",
         body: JSON.stringify(newUser),
         headers: {

@@ -20,7 +20,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form @submit.prevent="createService">
+        <form @submit.prevent="createMenu">
         <ul>
          <li>Tittle </li>
           <li> <input v-model="title" required type="text"></li>
@@ -67,7 +67,7 @@
     </div>
         <!-- end of item -->
     
-    <!-- <div class="col-lg-4 col-md-6 col-sm-12"> -->
+    <div class="col-lg-4 col-md-6 col-sm-12">
       <!-- item -->
         <!-- <div class = "menu-item">
           <a href = "@/assets/food-chicken-soup.jpg">
@@ -83,12 +83,12 @@
             </div>
           </a>
         </div> -->
-    <!-- </div> -->
+    </div>
         <!-- end of item -->
     
-    <!-- <div class="col-lg-4 col-md-6 col-sm-12"> -->
+    <div class="col-lg-4 col-md-6 col-sm-12">
       <!-- item -->
-        <!-- <div class = "menu-item">
+        <div class = "menu-item">
           <a href = "@/assets/food-chinese-noodles.jpg">
             <img src = "@/assets/food-chinese-noodles.jpg" alt = "food image">
             <div class = "menu-overlay">
@@ -101,8 +101,8 @@
               </div>
             </div>
           </a>
-        </div> -->
-          <!-- </div> -->
+        </div>
+          </div>
         <!-- end of item -->
     </div>
   
@@ -187,14 +187,19 @@ export default {
     };
   },
   mounted() {
-    fetch("http://localhost:3000/menu", {
+    if (!localStorage.getItem("jwt")) {
+        alert("User not logged in");
+       
+      }
+    fetch("https://lyf-styl-reservation.herokuapp.com/menu", {
       method: "GET",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-       " Authorization": `Bearer ${localStorage.getItem("jwt")}`}
+       "Authorization": `Bearer ${localStorage.getItem("jwt")}`}
     })
       .then((response) => response.json())
       .then((json) => {
+        console.log(json)
         this.menus = json;
       });
   },
@@ -205,17 +210,17 @@ createMenu() {
         alert("User not logged in");
        
       }
-    fetch("http://localhost:3000/menu/add", {
-        method: "POST",
-        body: JSON.stringify({
-          title: this.title,
-         category: this.category,
-          desc: this.desc,
-          img:this.img,
-          price: this.price,
+    fetch("https://lyf-styl-reservation.herokuapp.com/menu", {
+        method: "GET",
+        // body: JSON.stringify({
+        //   title: this.title,
+        //  category: this.category,
+        //   desc: this.desc,
+        //   img:this.img,
+        //   price: this.price,
 
     
-        }),
+        // }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -224,7 +229,7 @@ createMenu() {
         .then((response) => response.json())
     
         .then((json) => {
-         
+         console.log(json)
           alert("item added");
          
         })

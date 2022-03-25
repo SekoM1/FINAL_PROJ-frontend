@@ -18,10 +18,6 @@
         <div class="col-md-9 mb-md-0 mb-5" style="padding: 26px 131px;}">
           <form
             @submit.prevent="submitForm()"
-            id="contact-form"
-            name="contact-form"
-            action="mail.php"
-            method="POST"
           >
             <!--Grid row-->
             <div class="row">
@@ -137,7 +133,7 @@ export default {
   methods: {
     submitForm() {
       console.log(this.firstname, this.lastname, this.email, this.message);
-      fetch("http://localhost:3000/contact/", {
+      fetch("https://lyf-styl-reservation.herokuapp.com/contact", {
         method: "POST",
         headers: { "Content-type": "application/json; charset=UTF-8" },
 
