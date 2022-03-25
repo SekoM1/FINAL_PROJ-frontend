@@ -6,7 +6,7 @@
                     <h3>Reservation</h3>
                     <form>
                         <div class = "form-row">
-                            <select name = "days">
+                            <select id = "days" v-model="days">
                                 <option value = "day-select">Select Day</option>
                                 <option value = "sunday">Sunday</option>
                                 <option value = "monday">Monday</option>
@@ -17,7 +17,7 @@
                                 <option value = "saturday">Saturday</option>
                             </select>
 
-                            <select name = "hours">
+                            <select id = "hours" v-model="hours">
                                 <option value = "hour-select">Select Hour</option>
                                 <option value = "10">10: 00</option>
                                 <option value = "10">12: 00</option>
@@ -30,12 +30,12 @@
                         </div>
 
                         <div class = "form-row">
-                            <input type = "text" placeholder="Full Name">
-                            <input type = "text" placeholder="Phone Number">
+                            <input type = "text" id="fullname" v-model="fullname" placeholder="Full Name">
+                            <input type = "text" id="number" v-model="number" placeholder="Phone Number">
                         </div>
 
                         <div class = "form-row">
-                            <input type = "number" placeholder="How Many Persons?" min = "1">
+                            <input type = "number" id="people" v-model="people" placeholder="How Many Persons?" min = "1">
                             <input type = "submit" value = "BOOK TABLE">
                         </div>
                     </form>
@@ -55,7 +55,27 @@ export default {
     showForm(){
       //Logic 
       this.form = !this.form
-    }
+    },
+    submitForm() {
+      console.log(this.firstname, this.lastname, this.email, this.message);
+      fetch("http://localhost:3000/contact/", {
+        method: "POST",
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+
+        body: JSON.stringify({
+          fullname: this.fullname,
+          number: this.number,
+          email: this.email,
+          message: this.message,
+        }),
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json);
+        })
+        .catch((err) => console.log(err));
+    },
+  
   },
   mounted(){
         if (!localStorage.getItem("jwt")) {
