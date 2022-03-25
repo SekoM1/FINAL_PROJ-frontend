@@ -210,7 +210,7 @@ createMenu() {
         alert("User not logged in");
        
       }
-    fetch("https://lyf-styl-reservation.herokuapp.com/menu", {
+    fetch("https://lyf-styl-reservation.herokuapp.com/menu/add", {
         method: "GET",
         // body: JSON.stringify({
         //   title: this.title,
