@@ -242,14 +242,19 @@ export default {
         },
       })
         .then((response) => response.json())
-        .then((json) => {
-          localStorage.setItem("jwt", json.jwt);
+        .then(async(json) => {
+          if(json.jwt){
+                        console.log(json.jwt)
+                          localStorage.setItem("jwt", json.jwt);
           localStorage.setItem("user", JSON.stringify(json.user))
           console.log(json.jwt);
           console.log(json.user)
-          alert("User logged in");
-          console.log("User logged in");
-          // this.$router.push({ name: "Home" });
+            alert("User logged in");
+            return await localStorage.setItem("jwt", json.jwt);
+          
+          }
+          console.log(json);
+          alert("Wrong Credentials")
         }
         
         )
@@ -292,7 +297,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 /* modal */
 #logout {
   margin-left: 10px;

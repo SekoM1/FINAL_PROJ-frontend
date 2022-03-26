@@ -15,11 +15,19 @@
 export default {
   methods: {
     makeBooking: function () {
-      this.$emit("myBooking", true);
+      
+      
+      if (localStorage.getItem("jwt") !== "undefined") {
+        this.$emit("myBooking", true);
+      } else {
+        alert("Log in to book a reservaton");
+      }
+    
     },
   },
   data() {
     return {
+      jwt: localStorage.getItem("jwt") || null,
       user: {
         name:null
       },

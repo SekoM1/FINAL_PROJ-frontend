@@ -21,21 +21,68 @@
       </div>
       <div class="modal-body">
         <form @submit.prevent="createMenu">
-        <ul>
-         <li>Tittle </li>
-          <li> <input v-model="title" required type="text"></li>
-          <li>Price</li>
-          <li> <input v-model="price" required type="number"></li>
-        <li>desc</li>
-        <li> <input v-model="desc" required type="text"></li>
-        <li>categories</li>
-        <li> <input v-model="categories" required type="text"></li>
-        <li>img</li>
-        <li> <input v-model="img" required type="text"></li>
-       </ul>
+        <div class="group log-input">
+                    <input
+                      type="text"
+                      id="tittle"
+                      v-model="tittle"
+                      placeholder="Product Name"
+                    />
+                  </div>
+
+                  <div class="group log-input">
+                    <input
+                      type="number"
+                      id="price"
+                      v-model="price"
+                      placeholder="Price"
+                    />
+                  </div>
+
+                  <div class="group log-input">
+                    <input
+                      type="text"
+                      id="desc"
+                      v-model="desc"
+                      placeholder="Description"
+                    />
+                  </div>
+
+                  <div class="group log-input">
+                    <input
+                      type="text"
+                      id="catergory"
+                      v-model="catergory"
+                      placeholder="Catergory"
+                    />
+                  </div>
+
+                  <div class="group log-input">
+                    <input
+                      type="text"
+                      id="img"
+                      v-model="img"
+                      placeholder="Image url"
+                    />
+                  </div>
+
        
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary">Save</button>
+         <div class="modal-footer">
+                    <button
+                      type="submit"
+                      class="btn btn-outline"
+                      data-bs-dismiss="modal"
+                    >
+                      Cancel
+                    </button>
+                    <!-- sign up btn -->
+                    <button
+                      type="button"
+                      class="btn btn-outline"
+                    >
+                      Save
+                    </button>
+                  </div>
        </form>
       </div>
      
@@ -50,6 +97,7 @@
     <div class="col-lg-4 col-md-6 col-sm-12" v-for="menu in menus" :key="menu._id">
       <!-- item -->
          
+                
               <div class = "menu-item" v-if="menu">
           <!-- <a href = "@/assets/food-american-breakfast.jpg"> -->
             <img :src ="menu.img" alt = "food image" style="height: 310px; object-fit: cover;">
@@ -59,7 +107,14 @@
                   <h2>{{menu.title}}</h2>
                   <h2>R{{menu.price}}</h2>
                 </div>
-                <h5>{{menu.desc}}</h5>
+                <h5>{{menu.desc}}<button
+            type="button"
+            class="btn btn-secondary"
+            @click="removeMenu(menu._id)"
+          >
+            Delete
+          </button> </h5>
+
               </div>
             </div>
           <!-- </a> -->
@@ -237,6 +292,32 @@ createMenu() {
           console.log(err)
           alert("It failed.Try again please");
           this.loading = false;
+        });
+    },
+    // delete
+
+    removeMenu(id) {
+      if (!localStorage.getItem("jwt")) {
+        alert("User not logged in");
+      }
+      console.log(id);
+      fetch(
+        `https://lyf-styl-reservation.herokuapp.com/menu/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          alert("menu item removed successfully");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
         });
     },
 }
