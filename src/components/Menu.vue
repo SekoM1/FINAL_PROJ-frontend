@@ -106,14 +106,17 @@
                 <div>
                   <h2>{{menu.title}}</h2>
                   <h2>R{{menu.price}}</h2>
+            
                 </div>
                 <h5>{{menu.desc}}<button
             type="button"
             class="btn btn-secondary"
-            @click="removeMenu(menu._id)"
+            @click.prevent="removeMenu(menu._id)"
           >
             Delete
-          </button> </h5>
+          </button>
+          
+           </h5>
 
               </div>
             </div>
@@ -318,6 +321,38 @@ createMenu() {
         })
         .catch((error) => {
           console.error("Error:", error);
+        });
+    },
+
+    // update
+
+    updateMenu(id) {
+      if (!localStorage.getItem("jwt")) {
+        alert("User not logged in");
+      }
+      fetch(
+        `https://lyf-styl-reservation.herokuapp.com/menu/${id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify({
+            tittle: this.tittle,
+            category: this.category,
+            price: this.price,
+            img: this.img,
+            desc: this.desc,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((json) => {
+          alert("Menu item Edited");
+        })
+        .catch((err) => {
+          alert(err);
         });
     },
 }
