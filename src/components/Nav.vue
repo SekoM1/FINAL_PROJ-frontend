@@ -250,9 +250,14 @@ export default {
           alert("User logged in");
           console.log("User logged in");
           // this.$router.push({ name: "Home" });
-        })
+        }
+        
+        )
+
+        
         .catch((err) => {
           alert(err);
+          this.loading = false
         });
     },
 

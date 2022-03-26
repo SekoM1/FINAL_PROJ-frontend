@@ -46,13 +46,13 @@
       <!-- end of title -->
   <!-- <div class="container"> -->
         <!-- first row -->
-    <div class="row">
-    <div class="col-lg-4 col-md-6 col-sm-12">
+    <div class="row" style="row-gap:20px;">
+    <div class="col-lg-4 col-md-6 col-sm-12" v-for="menu in menus" :key="menu._id">
       <!-- item -->
          
-              <div class = "menu-item" v-for="menu in menus" :key="menu._id">
+              <div class = "menu-item" v-if="menu">
           <!-- <a href = "@/assets/food-american-breakfast.jpg"> -->
-            <img :src ="menu.img" alt = "food image">
+            <img :src ="menu.img" alt = "food image" style="height: 310px; object-fit: cover;">
             <div class = "menu-overlay">
               <div class = "menu-overlay-content">
                 <div>
@@ -67,7 +67,7 @@
     </div>
         <!-- end of item -->
     
-    <div class="col-lg-4 col-md-6 col-sm-12">
+    <!-- <div class="col-lg-4 col-md-6 col-sm-12"> -->
       <!-- item -->
         <!-- <div class = "menu-item">
           <a href = "@/assets/food-chicken-soup.jpg">
@@ -83,12 +83,12 @@
             </div>
           </a>
         </div> -->
-    </div>
+    <!-- </div> -->
         <!-- end of item -->
     
-    <div class="col-lg-4 col-md-6 col-sm-12">
+    <!-- <div class="col-lg-4 col-md-6 col-sm-12"> -->
       <!-- item -->
-        <div class = "menu-item">
+        <!-- <div class = "menu-item">
           <a href = "@/assets/food-chinese-noodles.jpg">
             <img src = "@/assets/food-chinese-noodles.jpg" alt = "food image">
             <div class = "menu-overlay">
@@ -102,7 +102,7 @@
             </div>
           </a>
         </div>
-          </div>
+          </div> -->
         <!-- end of item -->
     </div>
   
@@ -183,7 +183,7 @@ export default {
     img: "",
    category: "",
     price: "",
-    // menus:null
+    menus:null
     };
   },
   mounted() {
@@ -211,16 +211,16 @@ createMenu() {
        
       }
     fetch("https://lyf-styl-reservation.herokuapp.com/menu/add", {
-        method: "GET",
-        // body: JSON.stringify({
-        //   title: this.title,
-        //  category: this.category,
-        //   desc: this.desc,
-        //   img:this.img,
-        //   price: this.price,
+        method: "POST",
+        body: JSON.stringify({
+          title: this.title,
+         category: this.category,
+          desc: this.desc,
+          img:this.img,
+          price: this.price,
 
     
-        // }),
+        }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
@@ -299,6 +299,8 @@ section#menu{
     overflow: hidden;
     transition: all 0.5s ease;
     transform: translateY(100%);
+    margin-top: -35px;
+    text-size-adjust: 40px;
 }
 .menu-overlay-content div{
     display: flex;
