@@ -11,12 +11,12 @@
   ADD MENU ITEM
 </button>
 
-<!-- Modal -->
+<!-- Modal for add to menu -->
 <div class="modal fade" id="addmenu" tabindex="-1" aria-labelledby="addmenuLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addmenuLabel">Modal title</h5>
+        <h5 class="modal-title" id="addmenuLabel">Menu Item</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -91,7 +91,6 @@
 </div>
 
       <!-- end of title -->
-  <!-- <div class="container"> -->
         <!-- first row -->
     <div class="row" style="row-gap:20px;">
     <div class="col-lg-4 col-md-6 col-sm-12" v-for="menu in menus" :key="menu._id">
@@ -108,15 +107,16 @@
                   <h2>R{{menu.price}}</h2>
             
                 </div>
-                <h5>{{menu.desc}}<button
-            type="button"
-            class="btn btn-secondary"
-            @click.prevent="removeMenu(menu._id)"
-          >
-            Delete
-          </button>
-          
-           </h5>
+                <h5>{{menu.desc}}</h5>
+                  
+              <div class="edit-btn">     
+            <button
+            type="button" class="btn btn-secondary" @click.prevent="removeMenu(menu._id)">Delete</button>
+            <button type="button"
+            class="btn btn-secondary" @click="updateMenu(menu._id)" data-bs-toggle="modal" data-bs-target="#addmenu">Edit
+            </button>
+              </div>
+           
 
               </div>
             </div>
@@ -124,108 +124,10 @@
         </div>
     </div>
         <!-- end of item -->
+
     
-    <!-- <div class="col-lg-4 col-md-6 col-sm-12"> -->
-      <!-- item -->
-        <!-- <div class = "menu-item">
-          <a href = "@/assets/food-chicken-soup.jpg">
-            <img src = "@/assets/food-chicken-soup.jpg" alt = "food image">
-            <div class = "menu-overlay">
-              <div class = "menu-overlay-content">
-                <div>
-                  <h2>chicken soup</h2>
-                  <h2>R25</h2>
-                </div>
-                <h5>delicious / healthy / cheap</h5>
-              </div>
-            </div>
-          </a>
-        </div> -->
-    <!-- </div> -->
-        <!-- end of item -->
-    
-    <!-- <div class="col-lg-4 col-md-6 col-sm-12"> -->
-      <!-- item -->
-        <!-- <div class = "menu-item">
-          <a href = "@/assets/food-chinese-noodles.jpg">
-            <img src = "@/assets/food-chinese-noodles.jpg" alt = "food image">
-            <div class = "menu-overlay">
-              <div class = "menu-overlay-content">
-                <div>
-                  <h2>chinese noodles</h2>
-                  <h2>R25</h2>
-                </div>
-                <h5>delicious / healthy / cheap</h5>
-              </div>
-            </div>
-          </a>
-        </div>
-          </div> -->
-        <!-- end of item -->
     </div>
   
-    <!-- second row -->
-   <!-- <div class="row"> -->
-    <!-- <div class="col-lg-4 col-md-6 col-sm-12"> -->
-      <!-- item -->
-        
-           <!-- <div class = "menu-item">
-          <a href = "@/assets/food-cake.jpg">
-            <img src = "@/assets/food-cake.jpg" alt = "food image">
-            <div class = "menu-overlay">
-              <div class = "menu-overlay-content">
-                <div>
-                  <h2>cake items</h2>
-                  <h2>R25</h2>
-                </div>
-                <h5>delicious / healthy / cheap</h5>
-              </div>
-            </div>
-          </a>
-        </div> -->
-        <!-- end of item -->
-    <!-- </div> -->
-    <!-- <div class="col-lg-4 col-md-6 col-sm-12"> -->
-      <!-- item -->
-        
-           <!-- <div class = "menu-item">
-          <a href = "@/assets/food-cake.jpg">
-            <img src = "@/assets/food-cake.jpg" alt = "food image">
-            <div class = "menu-overlay">
-              <div class = "menu-overlay-content">
-                <div>
-                  <h2>cake items</h2>
-                  <h2>R25</h2>
-                </div>
-                <h5>delicious / healthy / cheap</h5>
-              </div>
-            </div>
-          </a>
-        </div> -->
-        <!-- end of item -->
-    <!-- </div> -->
-    <!-- <div class="col-lg-4 col-md-6 col-sm-12"> -->
-       <!-- item -->
-        <!-- <div class = "menu-item">
-          <a href = "@/assets/food-indian-food.jpg">
-            <img src = "@/assets/food-indian-food.jpg" alt = "food image">
-            <div class = "menu-overlay">
-              <div class = "menu-overlay-content">
-                <div>
-                  <h2>indian dish</h2>
-                   <div class="btn" @click="goToBlog1()">
-                  <a href="#blog1" class="btn"><b>more ...</b></a>
-                </div>
-                </div>
-                <h5>delicious / healthy / cheap</h5>
-              </div>
-            </div>
-          </a>
-        </div> -->
-        <!-- end of item -->
-    <!-- </div> -->
-  <!-- </div> -->
-  <!-- </div> -->
   
 
 
@@ -241,6 +143,7 @@ export default {
     img: "",
    category: "",
     price: "",
+    token: "",
     menus:null
     };
   },
@@ -327,7 +230,7 @@ createMenu() {
     // update
 
     updateMenu(id) {
-      if (!localStorage.getItem("jwt")) {
+      if (!localStorage.getItem("isAdmin")) {
         alert("User not logged in");
       }
       fetch(
@@ -343,7 +246,7 @@ createMenu() {
           }),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
-            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+            Authorization: `Bearer ${localStorage.getItem("isAdmin")}`,
           },
         }
       )
@@ -422,15 +325,25 @@ section#menu{
     display: flex;
     justify-content: space-between;
 }
+.edit-btn{
+   display: inline-block;
+   justify-content: space-around;
+}
 .menu-overlay-content h2{
     text-transform: capitalize;
     margin-bottom: 0;
+    font-size: medium;
+    margin-bottom: -6px;
+
 }
 .menu-overlay-content h5{
     text-transform: uppercase;
     color: var(--grey);
     margin-top: 0.6rem;
     font-size: 0.8rem;
+    font-size: x-small;
+    margin-bottom: 0px;
+
 }
 .menu-item:hover .menu-overlay{
     opacity: 1;
