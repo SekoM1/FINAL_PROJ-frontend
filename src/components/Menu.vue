@@ -7,9 +7,9 @@
       </div>
 
       <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline" data-bs-toggle="modal" data-bs-target="#addmenu">
-  ADD MENU ITEM
-</button>
+      <button type="button" class="btn btn-outline" data-bs-toggle="modal" data-bs-target="#addmenu" v-if="isAdmin">
+        ADD MENU ITEM
+      </button>
 
 <!-- Modal for add to menu -->
 <div class="modal fade" id="addmenu" tabindex="-1" aria-labelledby="addmenuLabel" aria-hidden="true">
@@ -111,9 +111,9 @@
                   
               <div class="edit-btn">     
             <button
-            type="button" class="btn btn-secondary" @click.prevent="removeMenu(menu._id)">Delete</button>
+            type="button" class="btn btn-secondary" @click.prevent="removeMenu(menu._id)" v-if="isAdmin" >Delete</button>
             <button type="button"
-            class="btn btn-secondary" @click="updateMenu(menu._id)" data-bs-toggle="modal" data-bs-target="#addmenu">Edit
+            class="btn btn-secondary" @click="updateMenu(menu._id)" data-bs-toggle="modal" data-bs-target="#addmenu" v-if="isAdmin"> Edit
             </button>
               </div>
            
@@ -132,6 +132,7 @@
 
 
 </section>
+
 </template>
 
 <script>
@@ -143,15 +144,19 @@ export default {
     img: "",
    category: "",
     price: "",
-    token: "",
+    isAdmin: false,
+  
     menus:null
     };
   },
   mounted() {
-    if (!localStorage.getItem("jwt")) {
+    if (!localStorage.getItem("isAdmin") ==="true" ) {
+      // this.isAdmin =true;
+      
+
         alert("User not logged in");
-       
       }
+      
     fetch("https://lyf-styl-reservation.herokuapp.com/menu", {
       method: "GET",
       headers: {
@@ -166,9 +171,14 @@ export default {
   },
   methods: {
 createMenu() {
+      
         
       if (!localStorage.getItem("jwt")) {
-        alert("User not logged in");
+         localStorage.setItem("user", JSON.stringify(json.user));
+
+        localStorage.setItem("isAdmin", JSON.stringify(json.isAdmin));
+        alert("User not logged as Admin");
+       
        
       }
     fetch("https://lyf-styl-reservation.herokuapp.com/menu/add", {
@@ -196,7 +206,7 @@ createMenu() {
         })
         .catch((err) => {
           console.log(err)
-          alert("It failed.Try again please");
+          alert("Adding failed.Try again");
           this.loading = false;
         });
     },
@@ -204,7 +214,10 @@ createMenu() {
 
     removeMenu(id) {
       if (!localStorage.getItem("jwt")) {
-        alert("User not logged in");
+        localStorage.setItem("user", JSON.stringify(json.user));
+
+        localStorage.setItem("jwt", JSON.stringify(json.isAdmin));
+        alert("User not logged as Admin");
       }
       console.log(id);
       fetch(
@@ -220,7 +233,7 @@ createMenu() {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-          alert("menu item removed successfully");
+          alert("Item successfully removed");
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -230,7 +243,9 @@ createMenu() {
     // update
 
     updateMenu(id) {
-      if (!localStorage.getItem("isAdmin")) {
+      if (!localStorage.getItem("jwt")) {
+       localStorage.setItem("user", JSON.stringify(json.user));
+       localStorage.setItem("isAdmin", JSON.stringify(json.isAdmin));
         alert("User not logged in");
       }
       fetch(

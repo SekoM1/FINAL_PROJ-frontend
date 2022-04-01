@@ -115,7 +115,7 @@ h4 {
   background: var(--dark);
 }
 .container {
-  width: 90vw;
+  width: 100vw;
   margin: 0 auto;
   
 }

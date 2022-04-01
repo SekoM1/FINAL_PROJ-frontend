@@ -34,25 +34,18 @@
         </ul>
 
         <!-- Button trigger modal -->
-        <button
-          type="button"
-          class="btn btn-outline"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          Login
-        </button>
+         <div class="dropdown">
+        <a class="btn btn-outline dropdown-toggle" href="#" style="border-radius:50px;"
+          role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          Profile
+        </a>
 
-        <!-- logout button -->
-
-        <button
-          type="submit"
-          id="logout"
-          class="btn btn-outline"
-          @click="logout"
-        >
-          Log out
-        </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <li><a class="dropdown-item" href="#">Accout</a></li>
+        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Login/Signup</a></li>
+        <li><a class="dropdown-item" type="submit" id="logout" @click="logout">Logout</a></li>
+    </ul>
+</div>
 
         <!-- Modal -->
         <div
@@ -208,6 +201,7 @@
       </div>
     </div>
   </nav>
+  
 </template>
 
 <script>
@@ -229,6 +223,7 @@ export default {
     console.log("user logged out")
     localStorage.clear();
     alert("logged out");
+    location.reload()
   },
     login() {
       fetch("https://lyf-styl-reservation.herokuapp.com/users/login", {
@@ -244,12 +239,12 @@ export default {
         .then((response) => response.json())
         .then(async(json) => {
           if(json.jwt){
-                        console.log(json.jwt)
-                          localStorage.setItem("jwt", json.jwt);
-          localStorage.setItem("user", JSON.stringify(json.user))
-          console.log(json.jwt);
-          console.log(json.user)
+            console.log(json.jwt)
+            localStorage.setItem("jwt", json.jwt);
+            localStorage.setItem("user", JSON.stringify(json.user))
+            console.log(json.user)
             alert("User logged in");
+            location.reload()
             return await localStorage.setItem("jwt", json.jwt);
           
           }
@@ -299,9 +294,9 @@ export default {
 
 <style >
 /* modal */
-#logout {
+/* #logout {
   margin-left: 10px;
-}
+} */
 
 #logout[disabled] {
   background-color: lightgray;
@@ -370,6 +365,15 @@ input:focus {
 }
 
 /* modalend */
+
+/* dropdwn */
+.dropdown-menu[data-bs-popper] {
+    top: 100%;
+    right: 0px;
+    margin-top: 0.525rem;
+}
+
+/* navigation */
 .navbar {
   position: fixed;
   top: 0;
